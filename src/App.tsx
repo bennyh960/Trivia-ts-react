@@ -5,10 +5,10 @@ import { fetchQuizQuestions } from "./api/api";
 
 import { Difficulty, QuestionState } from "./api/api";
 type AnswereOnject = {
-  question: string;
-  answere: string;
+  questions: string;
+  answer: string;
   correct: boolean;
-  cottectAnswere: string;
+  cottectAnswer: string;
 };
 const TOTAL_QUESTIONS = 10;
 
@@ -42,9 +42,24 @@ function App() {
     }
   };
 
-  const checkAnswere = (e: React.MouseEvent<HTMLButtonElement>) => {};
+  const checkAnswere = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!gameOver) {
+      const answer = e.currentTarget.value;
+      const correct = questions[number].correct_answer === answer;
+      if (correct) setScore((p) => p + 10);
+      // save answer in the array of user answers
+      const answerObj = {
+        questions: questions[number].question,
+        answer,
+        correct,
+        cottectAnswer: questions[number].correct_answer,
+      };
+      setUserAnsweres((prev) => [...prev, answerObj]);
+    }
+  };
   const nextQuestion = () => {
-    setNumber((p) => 1 + p);
+    if (!gameOver) setNumber((p) => 1 + p);
+    if (number + 1 === TOTAL_QUESTIONS) setGameOver(true);
   };
   return (
     <div className="app">
@@ -66,9 +81,11 @@ function App() {
           callback={checkAnswere}
         />
       )}
-      <button className="next" onClick={nextQuestion}>
-        NEXT QUESTION
-      </button>
+      {!gameOver && !loading && userAnsweres.length === number + 1 && number !== TOTAL_QUESTIONS - 1 && (
+        <button className="next" onClick={nextQuestion}>
+          NEXT QUESTION
+        </button>
+      )}
     </div>
   );
 }
