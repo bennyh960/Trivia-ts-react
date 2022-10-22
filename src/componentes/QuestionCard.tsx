@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AnswerObject } from "../App";
+import { ButtonWrapper, Wrapper } from "./question.card";
 type questionCardProps = {
   question: string;
   answeres: string[];
@@ -7,8 +8,8 @@ type questionCardProps = {
   questionNum: number;
   totalQuestions: number;
   userAnswere: any;
+  // userAnswere: AnswerObject;
 };
-// userAnswere: AnswerObject / undefined;
 
 export const QuestionCard: React.FC<questionCardProps> = ({
   question,
@@ -19,20 +20,24 @@ export const QuestionCard: React.FC<questionCardProps> = ({
   totalQuestions,
 }) => {
   return (
-    <div>
+    <Wrapper>
       <p className="number">
         Question: {questionNum}/{totalQuestions}
       </p>
       <p dangerouslySetInnerHTML={{ __html: question }} />
       <div>
         {answeres?.map((answer, i) => (
-          <div key={i}>
+          <ButtonWrapper
+            key={i}
+            correct={userAnswere?.cottectAnswer === answer}
+            userClicked={userAnswere?.answer === answer}
+          >
             <button disabled={!!userAnswere} onClick={callback} value={answer}>
               <span dangerouslySetInnerHTML={{ __html: answer }} />
             </button>
-          </div>
+          </ButtonWrapper>
         ))}
       </div>
-    </div>
+    </Wrapper>
   );
 };

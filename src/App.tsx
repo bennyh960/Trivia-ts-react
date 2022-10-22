@@ -6,7 +6,8 @@ import { fetchQuizQuestions } from "./api/api";
 import { Difficulty, QuestionState } from "./api/api";
 
 // styles
-import { GlobalStyleComponent } from "styled-components";
+// import { GlobalStyleComponent } from "styled-components";
+import { GlobalStyle, Wrapper } from "./styles/App.styles";
 
 export type AnswerObject = {
   questions: string;
@@ -67,15 +68,11 @@ function App() {
   };
   return (
     <>
-      <GlobalStyleComponent />
-      <div className="app">
+      <GlobalStyle />
+      <Wrapper>
         <h1>REACT QUIZ</h1>
-        {gameOver || userAnsweres.length === TOTAL_QUESTIONS ? (
-          <button className="start" onClick={startTrivia}>
-            start
-          </button>
-        ) : null}
-        {!gameOver && <p className="score">Score:{score}</p>}
+
+        {!gameOver && <p className="score">score: {score}</p>}
         {loading && <p className="loading">loading...</p>}
         {!loading && !gameOver && (
           <QuestionCard
@@ -87,12 +84,17 @@ function App() {
             callback={checkAnswere}
           />
         )}
+        {gameOver || userAnsweres.length === TOTAL_QUESTIONS ? (
+          <button className="start" onClick={startTrivia}>
+            start
+          </button>
+        ) : null}
         {!gameOver && !loading && userAnsweres.length === number + 1 && number !== TOTAL_QUESTIONS - 1 && (
           <button className="next" onClick={nextQuestion}>
             NEXT QUESTION
           </button>
         )}
-      </div>
+      </Wrapper>
     </>
   );
 }
