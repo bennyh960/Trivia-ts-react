@@ -6,8 +6,7 @@ import { fetchQuizQuestions } from "./api/api";
 import { Difficulty, QuestionState } from "./api/api";
 
 // styles
-// import { GlobalStyleComponent } from "styled-components";
-import { GlobalStyle, Wrapper } from "./styles/App.styles";
+import { GlobalStyle, Wrapper, Loader } from "./styles/App.styles";
 
 export type AnswerObject = {
   questions: string;
@@ -26,13 +25,9 @@ function App() {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
 
-  // console.log(fetchQuizQuestions(TOTAL_QUESTIONS, Difficulty.EASY));
-  // console.log(questions);
-
   const startTrivia = async () => {
     setLoading(true);
     setGameOver(false);
-    // console.log("xxx");
 
     try {
       const newQuestions = await fetchQuizQuestions(TOTAL_QUESTIONS, Difficulty.EASY);
@@ -41,7 +36,6 @@ function App() {
       setUserAnsweres([]);
       setNumber(0);
       setLoading(false);
-      // console.log(questions[0].answers);
     } catch (error) {
       console.log(error);
     }
@@ -52,7 +46,6 @@ function App() {
       const answer = e.currentTarget.value;
       const correct = questions[number].correct_answer === answer;
       if (correct) setScore((p) => p + 10);
-      // save answer in the array of user answers
       const answerObj = {
         questions: questions[number].question,
         answer,
@@ -73,7 +66,12 @@ function App() {
         <h1>REACT QUIZ</h1>
 
         {!gameOver && <p className="score">score: {score}</p>}
-        {loading && <p className="loading">loading...</p>}
+        {/* {loading && <p className="loading">loading...</p>} */}
+        {loading && (
+          <Loader>
+            <div className="lds-hourglass"></div>
+          </Loader>
+        )}
         {!loading && !gameOver && (
           <QuestionCard
             questionNum={number + 1}
