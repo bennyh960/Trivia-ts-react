@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { QuestionCard } from "./componentes/QuestionCard";
 import { fetchQuizQuestions } from "./api/api";
 

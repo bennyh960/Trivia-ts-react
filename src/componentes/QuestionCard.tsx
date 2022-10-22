@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { AnswerObject } from "../App";
+import React from "react";
+// import { AnswerObject } from "../App";
 import { ButtonWrapper, Wrapper } from "./question.card";
 type questionCardProps = {
   question: string;
